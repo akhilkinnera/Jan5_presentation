@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official Home of NAU Microelectronics Processing, Characterization, and Testing.">
+    <meta name="theme-color" content="#002454">
+    <title>NAU MPCT | The Official Home of Microelectronics</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Source+Sans+3:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* * ==========================================
+         * CORE VARIABLES & RESET
+         * ========================================== 
+         */
+        :root {
+            --nau-blue: #002454;
+            --nau-blue-dark: #001838;
+            --nau-blue-light: #003a85;
+            --nau-gold: #FAC01A;
+            --nau-gold-dark: #dbb400;
+            --nau-green: #007a33;
+            --nau-red: #bb0000;
+            
+            --white: #ffffff;
+            --gray-50: #f8f9fa;
+            --gray-100: #f1f3f5;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-600: #6c757d;
+            --gray-800: #343a40;
+            --black: #000000;
+
+            --bg-body: var(--white);
+            --text-main: var(--nau-blue);
+            
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-3xl: 64px;
+
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Source Sans 3', sans-serif;
+            
+            --radius-sm: 2px;
+            --radius-md: 4px;
+            
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            
+            --trans-med: 0.3s ease;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+        }
+
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+        h3 { font-size: 1.5rem; }
+
+        a { text-decoration: none; color: inherit; transition: color var(--trans-med); }
+        img { max-width: 100%; height: auto; display: block; }
+        ul { list-style: none; }
+
+        /* * ==========================================
+         * UTILITIES
+         * ========================================== 
+         */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+            position: relative;
+            z-index: 2;
+        }
+
+        .container-fluid { width: 100%; padding: 0 var(--space-md); }
+        .text-gold { color: var(--nau-gold); }
+        .text-white { color: #fff; }
+        .bg-blue { background-color: var(--nau-blue); }
+        .section-padding { padding: var(--space-3xl) 0; }
+        
+        .grid { display: grid; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .gap-lg { gap: var(--space-lg); }
+
+        @media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+        /* * ==========================================
+         * BUTTONS
+         * ========================================== 
+         */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--trans-med);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: skewX(-20deg);
+            transition: left var(--trans-med);
+            z-index: -1;
+        }
+        .btn:hover::after { left: 100%; transition: left 0.5s; }
+
+        .btn-primary { background-color: var(--nau-gold); color: var(--nau-blue); border-color: var(--nau-gold); }
+        .btn-primary:hover { background-color: var(--white); color: var(--nau-blue); border-color: var(--white); }
+        .btn-secondary { background-color: var(--nau-blue); color: var(--white); }
+        .btn-outline { border: 1px solid var(--nau-blue); color: var(--nau-blue); background: transparent; }
+        .btn-outline:hover { background: var(--nau-blue); color: var(--white); }
+
+        .section-header {
+            border-bottom: 4px solid var(--nau-gold);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: var(--space-sm);
+        }
+        .section-header h2 { margin-bottom: 0; color: var(--nau-blue); font-style: italic; }
+        .section-header .see-all {
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--nau-blue);
+        }
+        .section-header .see-all:hover { color: var(--nau-gold); }
+
+        /* * ==========================================
+         * CARDS (Standard)
+         * ========================================== 
+         */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: transform var(--trans-med), box-shadow var(--trans-med);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--nau-gold); }
+        .card-img-top { position: relative; padding-top: 56.25%; background: var(--gray-200); overflow: hidden; }
+        .card-img-top img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card:hover .card-img-top img { transform: scale(1.05); }
+        .card-body { padding: var(--space-md); flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.5rem; color: var(--nau-blue); margin-bottom: 10px; }
+        .card-meta { font-size: 0.8rem; color: var(--gray-600); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
+
+        /* * ==========================================
+         * HEADER
+         * ========================================== 
+         */
+        .site-header { position: sticky; top: 0; z-index: 1000; background-color: var(--nau-blue); color: var(--white); box-shadow: var(--shadow-md); }
+        .top-bar { background-color: var(--nau-blue-dark); font-size: 0.85rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .top-bar .container { display: flex; justify-content: space-between; }
+        .top-links a { margin-right: 15px; opacity: 0.8; font-weight: 600; }
+        .top-links a:hover { opacity: 1; color: var(--nau-gold); }
+        
+        .main-nav-container { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+        .brand-text .nau { font-family: var(--font-display); font-weight: 700; font-size: 2rem; color: var(--white); }
+        .brand-text .dept { font-family: var(--font-body); font-size: 0.8rem; text-transform: uppercase; color: var(--nau-gold); font-weight: 700; display: block; letter-spacing: 2px; }
+        
+        .nav-menu { display: flex; height: 100%; align-items: center; }
+        .nav-link { padding: 0 var(--space-md); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; text-transform: uppercase; color: var(--white); height: 100%; display: flex; align-items: center; border-bottom: 4px solid transparent; }
+        .nav-link:hover { color: var(--nau-gold); border-bottom-color: var(--nau-gold); }
+        .mobile-toggle { display: none; background: none; border: none; color: white; }
+        @media (max-width: 1024px) { .nav-menu { display: none; } .mobile-toggle { display: block; } }
+
+        /* * ==========================================
+         * HERO SLIDER
+         * ========================================== 
+         */
+        .hero { position: relative; height: 70vh; min-height: 500px; background: var(--black); overflow: hidden; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s; }
+        .slide.active { opacity: 1; z-index: 1; }
+        .slide-bg-img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,36,84,0.9), rgba(0,36,84,0.2)); }
+        .slide-content { position: absolute; bottom: 0; left: 0; width: 100%; padding-bottom: 60px; z-index: 2; }
+        .slide-tag { background: var(--nau-gold); color: var(--nau-blue); padding: 4px 12px; font-weight: 700; text-transform: uppercase; display: inline-block; transform: skewX(-15deg); margin-bottom: 10px; }
+        .slide-tag span { transform: skewX(15deg); display: block; }
+        .slide-title { color: var(--white); font-size: clamp(3rem, 6vw, 5rem); font-style: italic; line-height: 0.9; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); transform: translateY(20px); opacity: 0; transition: 0.5s ease 0.3s; }
+        .slide.active .slide-title { opacity: 1; transform: translateY(0); }
+        .slide-desc { color: var(--gray-300); font-size: 1.2rem; max-width: 600px; margin-bottom: 20px; opacity: 0; transform: translateY(20px); transition: 0.5s ease 0.5s; }
+        .slide.active .slide-desc { opacity: 1; transform: translateY(0); }
+        
+        .slider-controls { position: absolute; bottom: 30px; right: 30px; display: flex; gap: 10px; z-index: 10; }
+        .slider-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .slider-btn:hover { background: var(--nau-gold); color: var(--nau-blue); border-color: var(--nau-gold); }
+
+        /* * ==========================================
+         * QUICK ACTIONS
+         * ========================================== 
+         */
+        .quick-actions { background-color: var(--nau-blue); border-bottom: 4px solid var(--nau-gold); }
+        .action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.1); }
+        .action-item { background: var(--nau-blue); padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: 0.3s; color: white; }
+        .action-item:hover { background: var(--nau-blue-light); }
+        .action-icon { width: 40px; height: 40px; margin-bottom: 10px; fill: var(--nau-gold); }
+        .action-text { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; }
+        @media (max-width: 768px) { .action-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        /* * ==========================================
+         * FEATURED EQUIPMENT (SCROLL)
+         * ========================================== 
+         */
+        .equipment-section { background-color: var(--gray-50); position: relative; }
+        
+        .scroll-controls {
+            display: flex; gap: 10px;
+        }
+        
+        .scroll-btn {
+            width: 40px; height: 40px;
+            border: 1px solid var(--nau-blue);
+            background: transparent;
+            color: var(--nau-blue);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scroll-btn:hover { background: var(--nau-blue); color: var(--white); }
+
+        .equip-scroll-wrapper {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 10px 5px 40px 5px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .equip-scroll-wrapper::-webkit-scrollbar { display: none; }
+
+        .equip-card {
+            background: var(--white);
+            min-width: 320px;
+            max-width: 320px;
+            border: 1px solid var(--gray-200);
+            border-top: 4px solid var(--nau-blue); /* Athletic branding */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            scroll-snap-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .equip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-top-color: var(--nau-gold);
+        }
+
+        .equip-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            padding: 4px 8px;
+            align-self: flex-start;
+            margin-bottom: 10px;
+        }
+        .equip-tag.new { background: var(--nau-gold); color: var(--nau-blue); }
+
+        .equip-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            line-height: 1.1;
+            color: var(--nau-blue);
+            margin-bottom: 15px;
+            height: 3.3rem; /* maintain height */
+            display: flex;
+            align-items: center;
+        }
+
+        .equip-img-container {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-100);
+            margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .equip-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .equip-meta {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .equip-actions { margin-top: auto; }
+        .btn-full { width: 100%; text-align: center; }
+
+        /* * ==========================================
+         * METRICS (Formerly Live Stats)
+         * ========================================== 
+         */
+        .stats-section {
+            padding: var(--space-3xl) 0;
+            background-image: url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .stats-section::before {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(248, 249, 250, 0.95);
+            z-index: 1;
+        }
+        
+        .dashboard-container { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-lg); }
+        
+        .metrics-panel {
+            background: var(--white);
+            border-top: 5px solid var(--nau-blue);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-top: var(--space-md); }
+        
+        .metric-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--nau-blue);
+            line-height: 1;
+        }
+        .metric-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-top: 5px;
+            display: block;
+        }
+        .metric-sub { font-size: 0.8rem; color: var(--nau-green); font-weight: 600; margin-top: 5px; }
+
+        .events-panel {
+            background: var(--nau-blue);
+            color: var(--white);
+        }
+        .events-header {
+            background: var(--nau-blue-dark);
+            padding: 15px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            color: var(--nau-gold);
+        }
+        .event-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; gap: 10px;
+        }
+        .event-date {
+            background: var(--white); color: var(--nau-blue);
+            padding: 5px; width: 50px; text-align: center; border-radius: 2px;
+        }
+        .event-date .day { font-size: 1.2rem; font-weight: 800; display: block; line-height: 1; }
+        .event-date .month { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+
+        @media (max-width: 900px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* * ==========================================
+         * NEWS & FOOTER STYLES (Condensed)
+         * ========================================== 
+         */
+        .news-section { padding: var(--space-3xl) 0; background: var(--white); }
+        .featured-story { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-lg); background: var(--gray-50); margin-bottom: 40px; }
+        .featured-content { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
+        @media(max-width:900px){ .featured-story{ grid-template-columns: 1fr; } }
+
+        .site-footer { background: var(--nau-blue); color: white; padding-top: 60px; border-top: 10px solid var(--nau-gold); }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; padding-bottom: 40px; }
+        .footer-col h4 { color: var(--nau-gold); border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .footer-bottom { background: var(--nau-blue-dark); text-align: center; padding: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+        @media(max-width:900px){ .footer-grid{ grid-template-columns: 1fr 1fr; } }
+        @media(max-width:600px){ .footer-grid{ grid-template-columns: 1fr; } }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-links">
+                    <a href="#">NAU.edu</a>
+                    <a href="#">College of Engineering</a>
+                    <a href="#">Safety</a>
+                </div>
+            </div>
+        </div>
+        <div class="main-nav-container container">
+            <a href="index.html" class="brand-text">
+                <span class="nau">NORTHERN ARIZONA</span>
+                <span class="dept">MPCT LAB</span>
+            </a>
+            <button class="mobile-toggle">☰</button>
+            <nav class="nav-menu">
+                <a href="Athletics.html" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Equipment</a>
+                <a href="#" class="nav-link">Research</a>
+                <a href="#" class="nav-link">Faculty</a>
+                <a href="#" class="nav-link text-gold">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="heroSlider">
+            <div class="slide active">
+                <img src="Wafer.webp" class="slide-bg-img" alt="Wafer">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <div class="container">
+                        <div class="slide-tag"><span>Breaking News</span></div>
+                        <h1 class="slide-title">Engineering The Future<br>One Wafer at a Time</h1>
+                        <p class="slide-desc">$15M grant secured for advanced packaging research facilities.</p>
+                        <a href="#" class="btn btn-primary">Read Story</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="Students_cleanroom.webp" class="slide-bg-img" alt="Cleanroom">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <div class="container">
+                        <div class="slide-tag"><span>Facilities</span></div>
+                        <h1 class="slide-title">New Class 100 Area<br>Operational</h1>
+                        <p class="slide-desc">Lithography bay upgrades are complete.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="slider-btn" id="prevSlide">&larr;</button>
+                <button class="slider-btn" id="nextSlide">&rarr;</button>
+            </div>
+        </section>
+
+        <section class="quick-actions">
+            <div class="container">
+                <div class="action-grid">
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                        <span class="action-text">Reserve Tools</span>
+                    </div>
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22M12 6l7.53 13H4.47M11 10v4h2v-4m-2 6v2h2v-2"/></svg>
+                        <span class="action-text">Safety Protocol</span>
+                    </div>
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                        <span class="action-text">Facility Map</span>
+                    </div>
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <span class="action-text">Join The Team</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="equipment-section section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Featured Equipment</h2>
+                    <div class="scroll-controls">
+                        <button class="scroll-btn" onclick="scrollGrid(-340)">&lsaquo;</button>
+                        <button class="scroll-btn" onclick="scrollGrid(340)">&rsaquo;</button>
+                    </div>
+                </div>
+
+                <div class="equip-scroll-wrapper" id="cardContainer">
+                    <div class="equip-card">
+                        <span class="equip-tag new">New Arrival</span>
+                        <h3 class="equip-title">Keyence VHX 7000</h3>
+                        <div class="equip-img-container">
+                            <img src="Keyence7000.avif" class="equip-img" alt="Keyence">
+                        </div>
+                        <div class="equip-meta">
+                            <strong>Lab 102</strong><br>
+                            4K Digital Microscopy, 6000x Magnification, 3D Profiling.
+                        </div>
+                        <div class="equip-actions">
+                            <a href="#" class="btn btn-outline btn-full">View Specs</a>
+                        </div>
+                    </div>
+
+                    <div class="equip-card">
+                        <span class="equip-tag">Deposition</span>
+                        <h3 class="equip-title">High-Vacuum Sputter</h3>
+                        <div class="equip-img-container">
+                            <img src="Sputtering.webp" class="equip-img" alt="Sputter">
+                        </div>
+                        <div class="equip-meta">
+                            <strong>Room 145</strong><br>
+                            DC/RF Magnetron sputtering for thin film metal deposition.
+                        </div>
+                        <div class="equip-actions">
+                            <a href="#" class="btn btn-outline btn-full">View Specs</a>
+                        </div>
+                    </div>
+
+                    <div class="equip-card">
+                        <span class="equip-tag">Lithography</span>
+                        <h3 class="equip-title">UV Mask Aligner</h3>
+                        <div class="equip-img-container">
+                            <img src="Aligner.jpg" class="equip-img" alt="Mask Aligner">
+                        </div>
+                        <div class="equip-meta">
+                            <strong>Yellow Room</strong><br>
+                            Sub-micron alignment accuracy with 365nm UV source.
+                        </div>
+                        <div class="equip-actions">
+                            <a href="#" class="btn btn-outline btn-full">View Specs</a>
+                        </div>
+                    </div>
+
+                    <div class="equip-card">
+                        <span class="equip-tag">Metrology</span>
+                        <h3 class="equip-title">B2 Atomic Force Scope</h3>
+                        <div class="equip-img-container">
+                            <img src="B2_AFM.png" class="equip-img" alt="AFM">
+                        </div>
+                        <div class="equip-meta">
+                            <strong>Room 145</strong><br>
+                            Nano-surface analysis and roughness characterization.
+                        </div>
+                        <div class="equip-actions">
+                            <a href="#" class="btn btn-outline btn-full">View Specs</a>
+                        </div>
+                    </div>
+
+                    <div class="equip-card">
+                        <span class="equip-tag">Packaging</span>
+                        <h3 class="equip-title">Wedge Wire Bonder</h3>
+                        <div class="equip-img-container">
+                            <img src="bond.jpg" class="equip-img" alt="Wire Bonder">
+                        </div>
+                        <div class="equip-meta">
+                            <strong>Packaging Bay</strong><br>
+                            Ultrasonic wedge bonding for Al/Au wire interconnects.
+                        </div>
+                        <div class="equip-actions">
+                            <a href="#" class="btn btn-outline btn-full">View Specs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Lab Performance Metrics</h2>
+                    <a href="#" class="see-all">Full Report &rarr;</a>
+                </div>
+                
+                <div class="dashboard-container">
+                    <div class="metrics-panel">
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:10px;">
+                            <span style="font-family:var(--font-display); font-size:1.2rem; color:var(--nau-blue); font-weight:700;">Operational Snapshot</span>
+                            <span style="font-size:0.8rem; color:#666; font-weight:600;">UPDATED: JAN 2026</span>
+                        </div>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-box">
+                                <span class="metric-value">54</span>
+                                <span class="metric-label">Active Instruments</span>
+                                <div class="metric-sub">100% Operational</div>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">12</span>
+                                <span class="metric-label">New Publications</span>
+                                <div class="metric-sub">Fall 2025 Semester</div>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">250</span>
+                                <span class="metric-label">Students Trained</span>
+                                <div class="metric-sub">Year to Date</div>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">100</span>
+                                <span class="metric-label">Cleanroom Class</span>
+                                <div class="metric-sub">ISO 5 Certified</div>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">450</span>
+                                <span class="metric-label">Wafer Throughput</span>
+                                <div class="metric-sub">Per Month (Avg)</div>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-value">3</span>
+                                <span class="metric-label">Industry Partners</span>
+                                <div class="metric-sub">Sponsored Research</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="events-panel">
+                        <div class="events-header">Upcoming Events</div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <span class="day">12</span><span class="month">Jan</span>
+                            </div>
+                            <div>
+                                <strong style="display:block;">Photolithography Workshop</strong>
+                                <span style="font-size:0.8rem; opacity:0.8;">2:00 PM | Yellow Room</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <span class="day">15</span><span class="month">Jan</span>
+                            </div>
+                            <div>
+                                <strong style="display:block;">Intel Guest Lecture</strong>
+                                <span style="font-size:0.8rem; opacity:0.8;">4:00 PM | Hall B</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <span class="day">28</span><span class="month">Jan</span>
+                            </div>
+                            <div>
+                                <strong style="display:block;">Safety Certification</strong>
+                                <span style="font-size:0.8rem; opacity:0.8;">All Day | Online</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Top Stories</h2>
+                    <a href="#" class="see-all">Archive &rarr;</a>
+                </div>
+
+                <div class="featured-story">
+                    <div style="position:relative; min-height:300px;">
+                        <img src="https://images.unsplash.com/photo-1591522810850-58128c5fb089?q=80&w=2070&auto=format&fit=crop" style="position:absolute; width:100%; height:100%; object-fit:cover;" alt="Featured">
+                    </div>
+                    <div class="featured-content">
+                        <span class="text-gold" style="font-family:var(--font-display); font-weight:700; text-transform:uppercase;">Student Spotlight</span>
+                        <h3 style="font-size:2.5rem; color:var(--nau-blue); line-height:1; margin:10px 0;">New 5G Chip Testing Method Developed</h3>
+                        <p style="color:var(--gray-600); margin-bottom:20px;">Senior engineering students have published findings that could reduce testing time by 30%.</p>
+                        <a href="#" class="btn btn-secondary" style="align-self:start;">Read Report</a>
+                    </div>
+                </div>
+
+                <div class="grid grid-3 gap-lg">
+                    <article class="card">
+                        <div class="card-img-top">
+                            <img src="https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=2067&auto=format&fit=crop" alt="News">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-meta text-gold">Research</div>
+                            <h4 class="card-title">New SEM Installed</h4>
+                            <p style="color:var(--gray-600); font-size:0.9rem;">Installation of the Zeiss Sigma 300 is complete and ready for training.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-img-top">
+                            <img src="https://images.unsplash.com/photo-1517420704952-d9f39714cdd1?q=80&w=2070&auto=format&fit=crop" alt="News">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-meta text-gold">Community</div>
+                            <h4 class="card-title">STEM Day 2026</h4>
+                            <p style="color:var(--gray-600); font-size:0.9rem;">Faculty welcomed 200 local high school students to tour the facilities.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-img-top">
+                            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop" alt="News">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-meta text-gold">Industry</div>
+                            <h4 class="card-title">Microchip Partnership</h4>
+                            <p style="color:var(--gray-600); font-size:0.9rem;">A new internship pipeline guarantees summer positions for top students.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="NAU.png" style="filter: brightness(0) invert(1); width:200px; margin-bottom:20px;" alt="NAU Logo">
+                    <p style="opacity:0.7;">Advancing semiconductor education and research in Northern Arizona.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>The Lab</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Facilities Map</a></li>
+                        <li><a href="#">Equipment List</a></li>
+                        <li><a href="#">Safety Manual</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Academics</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Undergraduate</a></li>
+                        <li><a href="#">Graduate Research</a></li>
+                        <li><a href="#">Student Projects</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Industry Partners</a></li>
+                        <li><a href="#">Alumni Network</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Northern Arizona University. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hero Slider Logic
+        const slides = document.querySelectorAll('.slide');
+        const nextBtn = document.getElementById('nextSlide');
+        const prevBtn = document.getElementById('prevSlide');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        if(nextBtn && prevBtn) {
+            nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+            prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+            setInterval(() => showSlide(currentSlide + 1), 6000); // Auto play
+        }
+
+        // Featured Equipment Scroll Logic
+        function scrollGrid(amount) {
+            const container = document.getElementById('cardContainer');
+            if(container) {
+                container.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+        }
+
+        // Mobile Menu
+        const mobileBtn = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        if(mobileBtn) {
+            mobileBtn.addEventListener('click', () => {
+                const isHidden = window.getComputedStyle(navMenu).display === 'none';
+                if (isHidden) {
+                    navMenu.style.display = 'flex';
+                    navMenu.style.flexDirection = 'column';
+                    navMenu.style.position = 'absolute';
+                    navMenu.style.top = '100%';
+                    navMenu.style.left = '0';
+                    navMenu.style.width = '100%';
+                    navMenu.style.background = 'var(--nau-blue)';
+                    navMenu.style.padding = '20px';
+                } else {
+                    navMenu.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
