@@ -2407,29 +2407,29 @@
                              // Reset classes
                              badge.className = 'status-badge';
                              
-                             // Update colors based on status text
-                             const statusLower = item.status.toLowerCase();
+                             // Update colors based on status text (Availability Choices: Available, Not available, Maintenance)
+                             const statusLower = item.status.toLowerCase().trim();
                              
-                             if (statusLower.includes('available') && !statusLower.includes('not')) {
+                             if (statusLower === 'available') {
                                  badge.classList.add('available');
                                  if(bookBtn) {
                                      bookBtn.classList.remove('disabled');
                                      bookBtn.innerText = 'Book';
                                  }
-                             } else if (statusLower.includes('maintenance')) {
+                             } else if (statusLower === 'maintenance') {
                                  badge.classList.add('maintenance');
                                  if(bookBtn) {
                                     bookBtn.classList.add('disabled');
                                     bookBtn.innerText = 'Service';
                                  }
-                             } else if (statusLower.includes('limited')) {
-                                 badge.classList.add('limited');
+                             } else if (statusLower === 'not available') {
+                                 badge.classList.add('unavailable');
                                  if(bookBtn) {
-                                     bookBtn.classList.remove('disabled');
-                                     bookBtn.innerText = 'Book';
+                                     bookBtn.classList.add('disabled');
+                                     bookBtn.innerText = 'Unavailable';
                                  }
                              } else {
-                                 // Default to unavailable for "Not Available" or unknown
+                                 // Fallback for any other text
                                  badge.classList.add('unavailable');
                                  if(bookBtn) {
                                      bookBtn.classList.add('disabled');
